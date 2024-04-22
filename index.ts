@@ -20,11 +20,12 @@ const chatappCredentials = {
 app.post('/bitrix-handler', async (req, res) => {
   try {
     const bodyData = req.body
-    const taskId = bodyData.data.FIELDS_AFTER.ID
+    const event = bodyData.event
+    const taskId = event == 'ONTASKCOMMENTADD' ? bodyData.data.FIELDS_AFTER.TASK_ID : bodyData.data.FIELDS_AFTER.ID
 
     const response = await bitrixApi.get('/tasks.task.get', {
       params: {
-        taskId: taskId
+        taskId: taskId,
       }
     })
 
@@ -48,12 +49,26 @@ app.post('/bitrix-handler', async (req, res) => {
     const chatappTokensResponse = await chatappApi.post('/tokens', chatappCredentials)
     const chatappToken = chatappTokensResponse.data.data.accessToken
 
+    let message = ''
+
+    if (bodyData.event == 'ONTASKCOMMENTADD') {
+        const comment = (await bitrixApi.post('task.commentitem.get.json', [
+            bodyData.data.FIELDS_AFTER.TASK_ID,
+            bodyData.data.FIELDS_AFTER.ID,
+        ])).data.result
+        message = `*${comment.AUTHOR_NAME}* adicionou um comentário a tarefa *${task.title}*:\n${comment.POST_MESSAGE}`
+    }
+
+    if (bodyData.event == 'ONTASKADD') {
+        message = `Uma nova tarefa foi criada: ${task.title}`
+    }
+
     for (const contact of contacts) {
         if (contact && contact.length) {
             try {
                 await chatappApi.post(
                     `licenses/${CHATAPP_LICENSE_ID}/messengers/grWhatsApp/chats/${contact}/messages/text`,
-                    { text: `Uma nova tarefa foi criada: ${task.title}` },
+                    { text: message },
                     { headers: { Authorization: chatappToken, }},
                 )
             } catch (e: any) {
