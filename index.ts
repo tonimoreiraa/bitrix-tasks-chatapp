@@ -39,12 +39,16 @@ app.post('/bitrix-handler', async (req: Request, res: Response) => {
 
     const contactIDs: string[] = taskItemsResponse.data.result.UF_CRM_TASK.map((i: string) => i.replace(/[^\d]/g, ''))
 
-    const contacts = await Promise.all(contactIDs.map(async (id) => {
+    for (const id of contactIDs) {
+      try {
         const response = await bitrixApi.get('/crm.contact.get', {
             params: { id }
         })
-        return response.data.result?.PHONE[0]?.VALUE
-    }))
+        contactIDs.push(response.data.result?.PHONE[0]?.VALUE)
+      } catch (e) {
+        console.error(e)
+      }
+    }
     
     const chatappTokensResponse = await chatappApi.post('/tokens', chatappCredentials)
     const chatappToken = chatappTokensResponse.data.data.accessToken
