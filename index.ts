@@ -62,8 +62,8 @@ app.post('/bitrix-handler', async (req: Request, res: Response) => {
             bodyData.data.FIELDS_AFTER.ID,
         ])).data.result
         message = `*${comment.AUTHOR_NAME}* adicionou um comentário a tarefa *${task.title}*:\n${comment.POST_MESSAGE}`
-          .replace(/\[USER=\d+\]/, '')
-          .replace('[/USER]', '')
+          .replace(/\[USER=\d+\]/, '_')
+          .replace('[/USER]', '_')
     }
 
     if (bodyData.event == 'ONTASKADD') {
