@@ -38,13 +38,14 @@ app.post('/bitrix-handler', async (req: Request, res: Response) => {
     })
 
     const contactIDs: string[] = taskItemsResponse.data.result.UF_CRM_TASK.map((i: string) => i.replace(/[^\d]/g, ''))
+    const contacts: string[] = []
 
     for (const id of contactIDs) {
       try {
         const response = await bitrixApi.get('/crm.contact.get', {
             params: { id }
         })
-        contactIDs.push(response.data.result?.PHONE[0]?.VALUE)
+        contacts.push(response.data.result?.PHONE[0]?.VALUE)
       } catch (e) {
         console.error(e)
       }
