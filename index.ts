@@ -62,8 +62,8 @@ app.post('/bitrix-handler', async (req: Request, res: Response) => {
             bodyData.data.FIELDS_AFTER.ID,
         ])).data.result
         message = `*${comment.AUTHOR_NAME}* adicionou um comentário a tarefa *${task.title}*:\n${comment.POST_MESSAGE}`
-          .replaceAll(/\[USER=\d+\]/, '')
-          .replaceAll('[/USER]', '')
+          .replace(/\[USER=\d+\]/, '')
+          .replace('[/USER]', '')
     }
 
     if (bodyData.event == 'ONTASKADD') {
@@ -86,7 +86,7 @@ app.post('/bitrix-handler', async (req: Request, res: Response) => {
 
     res.status(200).send('OK')
   } catch (error: any) {
-    console.error(error.response.data)
+    console.error(error)
     res.status(500).send('Erro ao processar requisição.')
   }
 });
