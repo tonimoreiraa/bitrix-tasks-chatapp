@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { Request, Response } from 'express';
 import bodyParser from 'body-parser';
 import axios from 'axios';
 import 'dotenv/config'
@@ -17,7 +17,7 @@ const chatappCredentials = {
     password: process.env.CHATAPP_PASSWORD,
 }
 
-app.post('/bitrix-handler', async (req, res) => {
+app.post('/bitrix-handler', async (req: Request, res: Response) => {
   try {
     const bodyData = req.body
     const event = bodyData.event

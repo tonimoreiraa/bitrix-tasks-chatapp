@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon ./index.ts"
+    "dev": "nodemon ./index.ts",
+    "start": "node dist/index.js"
   },
   "keywords": [],
   "author": "",
@@ -14,7 +15,8 @@
     "axios": "^1.6.8",
     "body-parser": "^1.20.2",
     "dotenv": "^16.4.5",
-    "express": "^4.19.2"
+    "express": "^4.19.2",
+    "typescript": "^5.4.5"
   },
   "devDependencies": {
     "@types/body-parser": "^1.19.5",
