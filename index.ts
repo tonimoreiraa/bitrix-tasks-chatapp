@@ -62,10 +62,12 @@ app.post('/bitrix-handler', async (req: Request, res: Response) => {
             bodyData.data.FIELDS_AFTER.ID,
         ])).data.result
         message = `*${comment.AUTHOR_NAME}* adicionou um comentário a tarefa *${task.title}*:\n${comment.POST_MESSAGE}`
+          .replaceAll(/\[USER=\d+\]/, '')
+          .replaceAll('[/USER]', '')
     }
 
     if (bodyData.event == 'ONTASKADD') {
-        message = `Uma nova tarefa foi criada: ${task.title}`
+        message = `Olá prezado cliente, uma nova tarefa foi registrada: *${task.title}*\n\nPara mais detalhes entre em contato conosco.`
     }
 
     for (const contact of contacts) {
