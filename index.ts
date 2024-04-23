@@ -62,8 +62,8 @@ app.post('/bitrix-handler', async (req: Request, res: Response) => {
             bodyData.data.FIELDS_AFTER.ID,
         ])).data.result
         message = `*${comment.AUTHOR_NAME}* adicionou um comentário a tarefa *${task.title}*:\n${comment.POST_MESSAGE}`
-          .replace(/\[USER=\d+\]/, '_')
-          .replace('[/USER]', '_')
+          .replace(/\[USER=\d+\]/g, '_')
+          .replaceAll('[/USER]', '_')
         const objects: any = Object.values(comment.ATTACHED_OBJECTS)
         if (objects.length) {
           for (const object of objects) {
