@@ -64,6 +64,16 @@ app.post('/bitrix-handler', async (req: Request, res: Response) => {
         message = `*${comment.AUTHOR_NAME}* adicionou um comentário a tarefa *${task.title}*:\n${comment.POST_MESSAGE}`
           .replace(/\[USER=\d+\]/, '_')
           .replace('[/USER]', '_')
+        const objects: any = Object.values(comment.ATTACHED_OBJECTS)
+        if (objects.length) {
+          for (const object of objects) {
+            const fileResponse = await bitrixApi.get('/disk.file.getexternallink', {
+              params: { id: object.FILE_ID, }
+            })
+            const url = fileResponse.data.result
+            message = message + `\n\n${url}`
+          }
+        }
     }
 
     if (bodyData.event == 'ONTASKADD') {
