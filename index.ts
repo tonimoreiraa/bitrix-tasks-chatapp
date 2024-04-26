@@ -77,7 +77,18 @@ app.post('/bitrix-handler', async (req: Request, res: Response) => {
     }
 
     if (bodyData.event == 'ONTASKADD') {
-        message = `Olá prezado cliente, uma nova tarefa foi registrada: *${task.title}*\n\nPara mais detalhes entre em contato conosco.`
+      message = `Olá prezado cliente, uma nova tarefa foi registrada: *${task.title}*`
+      if (task.durationPlan > 0) {
+        const durationType =
+          task.durationType.includes('d') ? 'dias':
+          task.durationType.includes('h') ? 'horas' : 
+          task.durationType.includes('m') ? 'minutos' : ''
+        message = message + `\nA tarefa levará ${task.durationPlan} ${durationType}`
+      }
+      if (task.deadline) {
+        message = message + `\nO prazo é até ` + new Date(task.deadline).toLocaleString('pt-BR')
+      }
+      message = message + '\n\nPara mais detalhes entre em contato conosco.'
     }
 
     for (const contact of contacts) {
