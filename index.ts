@@ -64,8 +64,8 @@ app.post('/bitrix-handler', async (req: Request, res: Response) => {
         message = `*${comment.AUTHOR_NAME}* adicionou um comentário a tarefa *${task.title}*:\n${comment.POST_MESSAGE}`
           .replace(/\[USER=\d+\]/g, '_')
           .replaceAll('[/USER]', '_')
-        const objects: any = Object.values(comment.ATTACHED_OBJECTS)
-        if (objects.length) {
+        if (comment.ATTACHED_OBJECTS) {
+          const objects: any = Object.values(comment.ATTACHED_OBJECTS)
           for (const object of objects) {
             const fileResponse = await bitrixApi.get('/disk.file.getexternallink', {
               params: { id: object.FILE_ID, }
