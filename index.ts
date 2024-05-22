@@ -61,6 +61,9 @@ app.post('/bitrix-handler', async (req: Request, res: Response) => {
             bodyData.data.FIELDS_AFTER.TASK_ID,
             bodyData.data.FIELDS_AFTER.ID,
         ])).data.result
+        if (comment.POST_MESSAGE.toLowerCase().includes('/privar')) {
+          return res.status(400).send('Mensagem incluí texto privado')
+        }
         message = `*${comment.AUTHOR_NAME}* adicionou um comentário a tarefa *${task.title}*:\n${comment.POST_MESSAGE}`
           .replace(/\[USER=\d+\]/g, '_')
           .replaceAll('[/USER]', '_')
