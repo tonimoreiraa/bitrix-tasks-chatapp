@@ -91,6 +91,7 @@ app.post('/bitrix-handler', async (req: Request, res: Response) => {
       if (task.deadline) {
         message = message + `\nO prazo é até ` + new Date(task.deadline).toLocaleString('pt-BR')
       }
+      message = message + `\n${task.description}`
       message = message + '\n\nPara mais detalhes entre em contato conosco.'
     }
 
