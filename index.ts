@@ -50,10 +50,10 @@ app.post('/bitrix-handler', async (req: Request, res: Response) => {
         previousContactIDs = JSON.parse(fs.readFileSync(storagePath, 'utf8'))
       }
     
-      contactIDs = contactIDs.filter(id => !previousContactIDs.includes(id))
-    
       fs.mkdirSync(path.dirname(storagePath), { recursive: true })
       fs.writeFileSync(storagePath, JSON.stringify(contactIDs, null, 2))
+      
+      contactIDs = contactIDs.filter(id => !previousContactIDs.includes(id))
     
       if (!fileExists) {
         throw new Error('Arquivo de armazenamento não encontrado.')
