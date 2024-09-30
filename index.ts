@@ -58,6 +58,10 @@ app.post('/bitrix-handler', async (req: Request, res: Response) => {
       if (!fileExists) {
         throw new Error('Arquivo de armazenamento não encontrado.')
       }
+
+      if (taskItemsResponse.data.result.UF_AUTO_265164727672 != '1') {
+        return res.status(200).send('OK');
+      }
     } else {
       fs.mkdirSync(path.dirname(storagePath), { recursive: true })
       fs.writeFileSync(storagePath, JSON.stringify(contactIDs, null, 2))
