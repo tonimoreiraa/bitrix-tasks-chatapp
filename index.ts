@@ -39,7 +39,7 @@ app.post('/bitrix-handler', async (req: Request, res: Response) => {
       },
     });
 
-    let contactIDs: string[] = taskItemsResponse.data.result.UF_CRM_TASK.map((i: string) => i.replace(/[^\d]/g, ''));
+    let contactIDs: string[] = (taskItemsResponse.data.result.UF_CRM_TASK ?? []).map((i: string) => i.replace(/[^\d]/g, ''));
     
     const storagePath = path.join(__dirname, 'storage', `${taskId}.json`)
 
